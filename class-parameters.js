@@ -1,23 +1,23 @@
-function Town(index) {
-    this.index = index;
-    this.varNames = [];
-    this.progressVars = [];
-    this.totalActionList = [];
+class Town(index) {
+    index = index;
+    varNames = [];
+    progressVars = [];
+    totalActionList = [];
 
-    this.unlocked = function() {
+    unlocked() {
         return townsUnlocked.includes(this.index);
     }
 
-    this.expFromLevel = function(level) {
+    expFromLevel(level) {
         return level * (level + 1) * 50;
     }
 
-    this.getLevel = function(varName) {
+    getLevel(varName) {
         if (varName === "Survey") varName = varName + "Z" + this.index;
         return Math.floor((Math.sqrt(8 * this[`exp${varName}`] / 100 + 1) - 1) / 2);
     }
 
-    this.restart = function() {
+    restart() {
         for (let i = 0; i < this.varNames.length; i++) {
             const varName = this.varNames[i];
             this[`goodTemp${varName}`] = this[`good${varName}`];
@@ -28,12 +28,14 @@ function Town(index) {
 
     // [snip]
 
-    for (const action of totalActionList) {
-        if (this.index === action.townNum) {
-            this.totalActionList.push(action);
-            if (action.type === "limited") this.createVars(action.varName);
-            if (action.type === "progress") this.createProgressVars(action.varName);
-            if (action.type === "multipart") this.createMultipartVars(action.varName);
+    constructor {
+        for (const action of totalActionList) {
+            if (this.index === action.townNum) {
+                this.totalActionList.push(action);
+                if (action.type === "limited") this.createVars(action.varName);
+                if (action.type === "progress") this.createProgressVars(action.varName);
+                if (action.type === "multipart") this.createMultipartVars(action.varName);
+            }
         }
     }
 };
